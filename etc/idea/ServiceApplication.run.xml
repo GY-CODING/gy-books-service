@@ -2,7 +2,7 @@
   <configuration default="false" name="ServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
     <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
     <module name="service-template" />
-    <option name="SPRING_BOOT_MAIN_CLASS" value="org.gycoding.service.ServiceApplication" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="org.gycoding.books.BooksApplication" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>
