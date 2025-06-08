@@ -18,10 +18,19 @@ public interface OpenLibraryFacadeMapper {
         final var DEFAULT_COVER = "https://github.com/GY-CODING/img-repo/blob/main/gy-books/none.png?raw=true";
         final var DEFAULT_DESCRIPTION = "No description available.";
 
+        var description = "";
+
+        // This is done because OpenLibrary API can return descriptions as an object or as a pure string.
+        try {
+            description = (String) ((HashMap<String, Object>) work.get("description")).get("value");
+        } catch (Exception e) {
+            description = (String) work.get("description");
+        }
+
         return BookMO.builder()
                 .id(id)
                 .title((String) work.get("title"))
-                .description(work.containsKey("description") ? (String) ((HashMap<String, Object>) work.get("description")).get("value") : DEFAULT_DESCRIPTION)
+                .description(work.containsKey("description") ? description : DEFAULT_DESCRIPTION)
                 .authors(authors)
                 .cover(book.containsKey("cover_edition_key") ? String.format(COVER_URL, (String) book.get("cover_edition_key")) : DEFAULT_COVER)
                 .build();
