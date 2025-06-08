@@ -11,6 +11,7 @@ import java.util.UUID;
 public record BookRSDTO(
         UUID id,
         String title,
+        String description,
         String cover,
         List<AuthorRSDTO> authors,
         SeriesRSDTO series,
