@@ -1,4 +1,4 @@
-package org.gycoding.books.domain.model;
+package org.gycoding.books.application.dto.out;
 
 import lombok.Builder;
 
@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.UUID;
 
 @Builder
-public record BookMO(
+public record BookODTO(
         UUID id,
         String title,
         String description,
         String cover,
-        List<AuthorMO> authors,
-        SeriesMO series,
+        List<AuthorODTO> authors,
+        SeriesODTO series,
         Number averageRating
 ) { }

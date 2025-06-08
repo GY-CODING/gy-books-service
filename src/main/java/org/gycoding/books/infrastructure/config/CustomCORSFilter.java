@@ -4,7 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.gycoding.books.domain.exceptions.NotificationsAPIError;
+import org.gycoding.books.domain.exceptions.BooksAPIError;
 import org.gycoding.exceptions.model.APIException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -27,9 +27,9 @@ public class CustomCORSFilter extends OncePerRequestFilter {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             response.getWriter().write(
                     new APIException(
-                        NotificationsAPIError.FORBIDDEN.getCode(),
-                        NotificationsAPIError.FORBIDDEN.getMessage(),
-                        NotificationsAPIError.FORBIDDEN.getStatus().value()
+                        BooksAPIError.FORBIDDEN.getCode(),
+                        BooksAPIError.FORBIDDEN.getMessage(),
+                        BooksAPIError.FORBIDDEN.getStatus().value()
                     ).toString()
             );
         }

@@ -18,12 +18,10 @@ public class BookController {
 
     @GetMapping("")
     public ResponseEntity<?> queryBooks(
-            @RequestParam String title,
-            @RequestParam String author
-    ){
-
+            @RequestParam String q
+    ) {
         return ResponseEntity.ok(
-                service.queryBooks(title, author).stream()
+                service.queryBooks(q).stream()
                         .map(mapper::toRSDTO)
                         .toList()
         );
