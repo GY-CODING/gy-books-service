@@ -12,6 +12,6 @@ import java.util.UUID;
 public interface RatingRepository {
     Optional<RatingMO> get(String bookId, String userId);
     List<RatingMO> list(String userId);
-    RatingMO save(RatingMO rating);
+    RatingMO save(RatingMO rating) throws APIException;
     RatingMO update(RatingMO rating) throws APIException;
 }

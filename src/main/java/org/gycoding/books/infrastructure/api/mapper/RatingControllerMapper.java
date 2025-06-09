@@ -16,10 +16,10 @@ import java.util.UUID;
 public interface RatingControllerMapper {
     RatingRSDTO toRSDTO(RatingODTO rating);
 
-    @Mapping(target = "id", expression = "java(UUID.randomUUID())")
+    @Mapping(target = "bookId", source = "bookId")
     @Mapping(target = "startDate", expression = "java(toDateFormat(rating.startDate()))")
     @Mapping(target = "endDate", expression = "java(toDateFormat(rating.endDate()))")
-    RatingIDTO toIDTO(RatingRQDTO rating, String userId);
+    RatingIDTO toIDTO(RatingRQDTO rating, String bookId, String userId);
 
     default LocalDate toDateFormat(String date) {
         return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));

@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/books/ratings")
+@RequestMapping("/ratings")
 public class RatingController {
     private final RatingService service;
     private final RatingControllerMapper mapper;
@@ -37,19 +37,21 @@ public class RatingController {
         );
     }
 
-    @PostMapping("")
+    @PostMapping("/{id}")
     public ResponseEntity<?> saveRating(
+            @PathVariable("id") String bookId,
             @RequestHeader("x-user-id") String userId,
             @Valid @RequestBody RatingRQDTO rating
     ) throws APIException {
-        return ResponseEntity.ok(mapper.toRSDTO(service.saveRating(mapper.toIDTO(rating, userId))));
+        return ResponseEntity.ok(mapper.toRSDTO(service.saveRating(mapper.toIDTO(rating, bookId, userId))));
     }
 
-    @PatchMapping("")
+    @PatchMapping("/{id}")
     public ResponseEntity<?> updateRating(
+            @PathVariable("id") String bookId,
             @RequestHeader("x-user-id") String userId,
             @Valid @RequestBody RatingRQDTO rating
     ) throws APIException {
-        return ResponseEntity.ok(mapper.toRSDTO(service.updateRating(mapper.toIDTO(rating, userId))));
+        return ResponseEntity.ok(mapper.toRSDTO(service.updateRating(mapper.toIDTO(rating, bookId, userId))));
     }
 }

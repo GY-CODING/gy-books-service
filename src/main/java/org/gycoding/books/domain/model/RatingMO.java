@@ -12,7 +12,6 @@ import java.util.UUID;
 
 @Builder
 public record RatingMO(
-        UUID id,
         String bookId,
         String userId,
         Number rating,
