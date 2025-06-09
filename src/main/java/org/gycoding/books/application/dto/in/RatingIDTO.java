@@ -1,4 +1,4 @@
-package org.gycoding.books.application.dto.out;
+package org.gycoding.books.application.dto.in;
 
 import lombok.Builder;
 
@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Builder
-public record RatingODTO(
+public record RatingIDTO(
         UUID id,
         String bookId,
         String userId,

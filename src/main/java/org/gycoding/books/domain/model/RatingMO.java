@@ -6,13 +6,16 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.UUID;
 
 @Builder
 public record RatingMO(
-        String id,
+        UUID id,
         String bookId,
+        String userId,
         Number rating,
-        Date startDate,
-        Date endDate
+        LocalDate startDate,
+        LocalDate endDate
 ) { }

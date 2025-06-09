@@ -8,6 +8,7 @@ import org.gycoding.books.domain.model.SeriesMO;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -21,7 +22,8 @@ public class RatingEntity {
     private String mongoId;
     private String id;
     private String bookId;
+    private String userId;
     private Number rating;
-    private Date startDate;
-    private Date endDate;
+    private String startDate;
+    private String endDate;
 }
