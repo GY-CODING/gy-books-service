@@ -19,6 +19,7 @@ import java.util.UUID;
 public class RatingServiceImpl implements RatingService {
     private final RatingRepository repository;
     private final RatingServiceMapper mapper;
+    private final BookService bookService;
 
     @Override
     public RatingODTO getRating(String bookId, String userId) throws APIException {
@@ -51,7 +52,9 @@ public class RatingServiceImpl implements RatingService {
     @Override
     public RatingODTO saveRating(RatingIDTO rating) throws APIException {
         try {
-            return mapper.toODTO(repository.save(mapper.toMO(rating)));
+            final var savedRating = mapper.toODTO(repository.save(mapper.toMO(rating)));
+
+            bookService.refreshAverageRating(mapper.toMO(rating));
         } catch (Exception e) {
             throw new APIException(
                     BooksAPIError.CONFLICT.getCode(),

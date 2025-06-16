@@ -9,11 +9,6 @@ import java.util.UUID;
 
 @Builder
 public record BookMO(
-        UUID id,
-        String title,
-        String description,
-        String cover,
-        List<AuthorMO> authors,
-        SeriesMO series,
+        String id,
         Number averageRating
 ) { }

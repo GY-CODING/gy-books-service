@@ -34,12 +34,8 @@ public class RatingRepositoryImpl implements RatingRepository {
 
     @Override
     public RatingMO save(RatingMO rating) throws APIException {
-        if(repository.findByBookId(rating.bookId()).isPresent()) {
-            throw new APIException(
-                    BooksAPIError.CONFLICT.getCode(),
-                    BooksAPIError.CONFLICT.getMessage(),
-                    BooksAPIError.CONFLICT.getStatus()
-            );
+        if(repository.findByBookIdAndUserId(rating.bookId(), rating.userId()).isPresent()) {
+            this.update(rating);
         }
 
         return mapper.toMO(repository.save(mapper.toEntity(rating)));
@@ -47,7 +43,7 @@ public class RatingRepositoryImpl implements RatingRepository {
 
     @Override
     public RatingMO update(RatingMO rating) throws APIException {
-        final var persistedRating = repository.findByBookId(rating.bookId())
+        final var persistedRating = repository.findByBookIdAndUserId(rating.bookId(), rating.userId())
                 .orElseThrow(() -> new APIException(
                         BooksAPIError.RESOURCE_NOT_FOUND.getCode(),
                         BooksAPIError.RESOURCE_NOT_FOUND.getMessage(),

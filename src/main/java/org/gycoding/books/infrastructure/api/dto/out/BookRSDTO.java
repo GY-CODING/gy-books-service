@@ -9,11 +9,6 @@ import java.util.UUID;
 
 @Builder
 public record BookRSDTO(
-        UUID id,
-        String title,
-        String description,
-        String cover,
-        List<AuthorRSDTO> authors,
-        SeriesRSDTO series,
+        String id,
         Number averageRating
 ) { }

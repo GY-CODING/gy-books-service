@@ -8,7 +8,6 @@ import java.util.UUID;
 
 @Builder
 public record RatingODTO(
-        UUID id,
         String bookId,
         String userId,
         Number rating,
