@@ -52,7 +52,7 @@ public class BookServiceImpl implements BookService {
 
         try {
             return mapper.toODTO(repository.save(book));
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             throw new APIException(
                     BooksAPIError.CONFLICT.getCode(),
                     BooksAPIError.CONFLICT.getMessage(),
