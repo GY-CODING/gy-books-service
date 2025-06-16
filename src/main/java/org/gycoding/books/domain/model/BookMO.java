@@ -10,5 +10,6 @@ import java.util.UUID;
 @Builder
 public record BookMO(
         String id,
-        Number averageRating
+        Number averageRating,
+        BookStatus status
 ) { }

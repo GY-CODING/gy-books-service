@@ -2,6 +2,7 @@ package org.gycoding.books.application.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.gycoding.books.application.dto.in.BookIDTO;
 import org.gycoding.books.application.dto.in.RatingIDTO;
 import org.gycoding.books.application.dto.out.BookODTO;
 import org.gycoding.books.application.dto.out.RatingODTO;
@@ -9,6 +10,7 @@ import org.gycoding.books.application.mapper.BookServiceMapper;
 import org.gycoding.books.application.mapper.RatingServiceMapper;
 import org.gycoding.books.domain.exceptions.BooksAPIError;
 import org.gycoding.books.domain.model.BookMO;
+import org.gycoding.books.domain.model.BookStatus;
 import org.gycoding.books.domain.model.RatingMO;
 import org.gycoding.books.domain.repository.BookRepository;
 import org.gycoding.books.domain.repository.RatingRepository;
@@ -38,12 +40,35 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public BookODTO updateBookStatus(String id, BookStatus status) throws APIException {
+        final var book = repository.get(id)
+                .orElse(
+                    BookMO.builder()
+                        .id(id)
+                        .averageRating(0.0)
+                        .status(status)
+                        .build()
+                );
+
+        try {
+            return mapper.toODTO(repository.save(book));
+        } catch (IllegalArgumentException e) {
+            throw new APIException(
+                    BooksAPIError.CONFLICT.getCode(),
+                    BooksAPIError.CONFLICT.getMessage(),
+                    BooksAPIError.CONFLICT.getStatus()
+            );
+        }
+    }
+
+    @Override
     public void refreshAverageRating(RatingMO rating) throws APIException {
         final var persistedBook = repository.get(rating.bookId())
                 .orElseGet(() -> {
                     final var defaultBook = BookMO.builder()
                             .id(rating.bookId())
                             .averageRating(rating.rating())
+                            .status(BookStatus.READ)
                             .build();
 
                     try {

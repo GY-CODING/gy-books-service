@@ -4,6 +4,8 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.gycoding.books.application.service.BookService;
 import org.gycoding.books.application.service.RatingService;
+import org.gycoding.books.domain.model.BookStatus;
+import org.gycoding.books.infrastructure.api.dto.in.BookRQDTO;
 import org.gycoding.books.infrastructure.api.dto.in.RatingRQDTO;
 import org.gycoding.books.infrastructure.api.mapper.BookControllerMapper;
 import org.gycoding.books.infrastructure.api.mapper.RatingControllerMapper;
@@ -23,5 +25,13 @@ public class BookController {
             @PathVariable("id") String id
     ) throws APIException {
         return ResponseEntity.ok(mapper.toRSDTO(service.getBook(id)));
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> updateBookStatus(
+            @PathVariable("id") String id,
+            @RequestParam String status
+    ) throws APIException {
+        return ResponseEntity.ok(mapper.toRSDTO(service.updateBookStatus(id, BookStatus.valueOf(status))));
     }
 }
