@@ -1,6 +1,7 @@
 package org.gycoding.books.infrastructure.api.dto.out;
 
 import lombok.Builder;
+import org.gycoding.books.domain.model.BookStatus;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -10,5 +11,6 @@ import java.util.UUID;
 @Builder
 public record BookRSDTO(
         String id,
-        Number averageRating
+        Number averageRating,
+        BookStatus status
 ) { }

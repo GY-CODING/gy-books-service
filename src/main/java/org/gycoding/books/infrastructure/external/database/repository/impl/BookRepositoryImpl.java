@@ -36,8 +36,21 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
+    public BookMO update(BookMO book) throws APIException {
+        final var persistedBook = repository.findById(book.id());
+
+        if(persistedBook.isEmpty()) {
+            return save(book);
+        }
+
+        return mapper.toMO(repository.save(mapper.toUpdatedEntity(persistedBook.get(), book)));
+    }
+
+    @Override
     public Optional<BookMO> get(String id) {
-        return repository.findById(id)
+        final var test = repository.findById(id)
                 .map(mapper::toMO);
+
+        return test;
     }
 }

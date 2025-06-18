@@ -41,17 +41,23 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookODTO updateBookStatus(String id, BookStatus status) throws APIException {
-        final var book = repository.get(id)
-                .orElse(
-                    BookMO.builder()
-                        .id(id)
-                        .averageRating(0.0)
-                        .status(status)
-                        .build()
-                );
+        final var bookOptional = repository.get(id);
+        BookMO book = null;
+
+        if(bookOptional.isEmpty()) {
+            book = repository.save(
+                BookMO.builder()
+                    .id(id)
+                    .averageRating(0.0)
+                    .status(status)
+                    .build()
+            );
+        } else {
+            book = bookOptional.get();
+        }
 
         try {
-            return mapper.toODTO(repository.save(book));
+            return mapper.toODTO(repository.update(book));
         } catch (Exception e) {
             throw new APIException(
                     BooksAPIError.CONFLICT.getCode(),

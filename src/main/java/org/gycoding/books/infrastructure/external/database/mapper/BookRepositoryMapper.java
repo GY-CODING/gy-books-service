@@ -16,6 +16,10 @@ public interface BookRepositoryMapper {
 
     BookEntity toEntity(BookMO book);
 
+    @Mapping(target = "mongoId", ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    BookEntity toUpdatedEntity(@MappingTarget BookEntity persistedBook, BookMO book);
+
     default String formatDate(LocalDate date) {
         if(date == null) return null;
 

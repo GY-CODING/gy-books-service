@@ -11,5 +11,6 @@ import java.util.Optional;
 @Repository
 public interface BookRepository {
     BookMO save(BookMO book) throws APIException;
+    BookMO update(BookMO book) throws APIException;
     Optional<BookMO> get(String id);
 }
