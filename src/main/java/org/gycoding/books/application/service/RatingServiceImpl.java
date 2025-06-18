@@ -56,19 +56,7 @@ public class RatingServiceImpl implements RatingService {
         try {
             final var savedRating = mapper.toODTO(repository.save(mapper.toMO(rating)));
 
-            final var ratingList = new ArrayList<Double>(repository.list(rating.bookId())
-                    .stream()
-                    .map(ratingElement -> ratingElement.rating().doubleValue())
-                    .toList());
-            
-            ratingList.add(savedRating.rating().doubleValue());
-
-            final var averageRating = ratingList.stream()
-                    .mapToDouble(Double::doubleValue)
-                    .average()
-                    .orElse(0.0);
-
-            bookService.refreshAverageRating(rating.bookId(), averageRating, rating.userId());
+            bookService.refreshAverageRating(rating.bookId(), calculateAverageRating(rating), rating.userId());
 
             return savedRating;
         } catch (Exception e) {
@@ -83,7 +71,11 @@ public class RatingServiceImpl implements RatingService {
     @Override
     public RatingODTO updateRating(RatingIDTO rating) throws APIException {
         try {
-            return mapper.toODTO(repository.update(mapper.toMO(rating)));
+            final var updatedRating = mapper.toODTO(repository.update(mapper.toMO(rating)));
+
+            bookService.refreshAverageRating(rating.bookId(), calculateAverageRating(rating), rating.userId());
+
+            return updatedRating;
         } catch (Exception e) {
             throw new APIException(
                     BooksAPIError.CONFLICT.getCode(),
@@ -91,5 +83,19 @@ public class RatingServiceImpl implements RatingService {
                     BooksAPIError.CONFLICT.getStatus()
             );
         }
+    }
+
+    private Number calculateAverageRating(RatingIDTO rating) {
+        final var ratingList = new ArrayList<Double>(repository.list(rating.bookId())
+                .stream()
+                .map(ratingElement -> ratingElement.rating().doubleValue())
+                .toList());
+
+        ratingList.add(rating.rating().doubleValue());
+
+        return ratingList.stream()
+                .mapToDouble(Double::doubleValue)
+                .average()
+                .orElse(0.0);
     }
 }
