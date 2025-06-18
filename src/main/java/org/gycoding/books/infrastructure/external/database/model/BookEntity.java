@@ -12,7 +12,7 @@ import java.util.UUID;
 @Builder
 @Getter
 @Setter
-@Document(collection = "Book")
+@Document(collection = "BookPublic")
 public class BookEntity {
     @Id
     private String mongoId;
