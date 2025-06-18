@@ -35,7 +35,11 @@ public class RatingRepositoryImpl implements RatingRepository {
     @Override
     public RatingMO save(RatingMO rating) throws APIException {
         if(repository.findByBookIdAndUserId(rating.bookId(), rating.userId()).isPresent()) {
-            this.update(rating);
+            throw new APIException(
+                BooksAPIError.CONFLICT.getCode(),
+                BooksAPIError.CONFLICT.getMessage(),
+                BooksAPIError.CONFLICT.getStatus()
+            );
         }
 
         return mapper.toMO(repository.save(mapper.toEntity(rating)));

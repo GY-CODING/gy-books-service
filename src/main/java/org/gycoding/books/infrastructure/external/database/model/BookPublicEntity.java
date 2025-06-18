@@ -10,11 +10,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Builder
 @Getter
 @Setter
-@Document(collection = "Book")
-public class BookEntity {
+@Document(collection = "BookPublic")
+public class BookPublicEntity {
     @Id
     private String mongoId;
     private String id;
-    private String userId;
-    private BookStatus status;
+    private Number averageRating;
 }

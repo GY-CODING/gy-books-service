@@ -18,7 +18,9 @@ import java.util.UUID;
 
 @Mapper(componentModel = "spring", imports = { UUID.class }, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface BookControllerMapper {
-    BookIDTO toIDTO(BookRQDTO book);
+    @Mapping(target = "id", source = "id")
+    BookIDTO toIDTO(BookRQDTO book, String id);
+
     BookRSDTO toRSDTO(BookODTO book);
 
     default LocalDate toDateFormat(String date) {

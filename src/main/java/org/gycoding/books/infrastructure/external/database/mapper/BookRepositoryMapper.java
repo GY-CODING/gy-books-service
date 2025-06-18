@@ -1,9 +1,8 @@
 package org.gycoding.books.infrastructure.external.database.mapper;
 
 import org.gycoding.books.domain.model.BookMO;
-import org.gycoding.books.domain.model.RatingMO;
 import org.gycoding.books.infrastructure.external.database.model.BookEntity;
-import org.gycoding.books.infrastructure.external.database.model.RatingEntity;
+import org.gycoding.books.infrastructure.external.database.model.BookPublicEntity;
 import org.mapstruct.*;
 
 import java.time.LocalDate;
@@ -12,9 +11,20 @@ import java.util.UUID;
 
 @Mapper(componentModel = "spring", imports = { UUID.class }, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface BookRepositoryMapper {
-    BookMO toMO(BookEntity book);
+    @Mapping(target = "id", source = "bookPublic.id")
+    BookMO toMO(BookPublicEntity bookPublic, BookEntity book);
 
-    BookEntity toEntity(BookMO book);
+    BookMO toPublicMO(BookPublicEntity bookPublic);
+
+    BookPublicEntity toPublicEntity(BookMO book);
+
+    @Mapping(target = "userId", source = "userId")
+    BookEntity toEntity(BookMO book, String userId);
+
+    @Mapping(target = "mongoId", ignore = true)
+    @Mapping(target = "averageRating", expression = "java(checkNull(book.averageRating()))")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    BookPublicEntity toUpdatedPublicEntity(@MappingTarget BookPublicEntity persistedBookPublic, BookMO book);
 
     @Mapping(target = "mongoId", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
@@ -24,5 +34,9 @@ public interface BookRepositoryMapper {
         if(date == null) return null;
 
         return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
+
+    default Number checkNull(Number number) {
+        return number == null ? 0.0 : number;
     }
 }

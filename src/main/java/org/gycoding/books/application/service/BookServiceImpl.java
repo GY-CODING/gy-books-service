@@ -2,6 +2,7 @@ package org.gycoding.books.application.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.gycoding.books.application.dto.in.BookIDTO;
 import org.gycoding.books.application.dto.out.BookODTO;
 import org.gycoding.books.application.mapper.BookServiceMapper;
 import org.gycoding.books.domain.exceptions.BooksAPIError;
@@ -34,7 +35,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookODTO getBook(String id, String userId) throws APIException {
-        return repository.get(id)
+        return repository.get(id, userId)
                 .map(mapper::toODTO)
                 .orElseThrow(
                         () -> new APIException(
@@ -46,24 +47,9 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookODTO updateBookStatus(String id, BookStatus status) throws APIException {
-        final var bookOptional = repository.get(id);
-        BookMO book = null;
-
-        if(bookOptional.isEmpty()) {
-            book = repository.save(
-                BookMO.builder()
-                    .id(id)
-                    .averageRating(0.0)
-                    .status(status)
-                    .build()
-            );
-        } else {
-            book = bookOptional.get();
-        }
-
+    public BookODTO updateBook(BookIDTO book, String userId) throws APIException {
         try {
-            return mapper.toODTO(repository.update(book));
+            return mapper.toODTO(repository.update(mapper.toMO(book), userId));
         } catch (Exception e) {
             throw new APIException(
                     BooksAPIError.CONFLICT.getCode(),
@@ -74,7 +60,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void refreshAverageRating(RatingMO rating) throws APIException {
+    public void refreshAverageRating(RatingMO rating, String userId) throws APIException {
         final var persistedBook = repository.get(rating.bookId())
                 .orElse(
                     BookMO.builder()
@@ -84,6 +70,6 @@ public class BookServiceImpl implements BookService {
                             .build()
                 );
 
-        repository.save(persistedBook);
+        repository.save(persistedBook, userId);
     }
 }

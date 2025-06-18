@@ -37,10 +37,11 @@ public class BookController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateBookStatus(
+    public ResponseEntity<?> updateBook(
+            @RequestHeader("x-user-id") String userId,
             @PathVariable("id") String id,
-            @RequestBody BookStatusRQDTO status
+            @RequestBody BookRQDTO book
     ) throws APIException {
-        return ResponseEntity.ok(mapper.toRSDTO(service.updateBookStatus(id, status.status())));
+        return ResponseEntity.ok(mapper.toRSDTO(service.updateBook(mapper.toIDTO(book, id), userId)));
     }
 }

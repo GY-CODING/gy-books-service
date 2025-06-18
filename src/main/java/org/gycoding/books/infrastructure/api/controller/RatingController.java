@@ -39,8 +39,8 @@ public class RatingController {
 
     @PostMapping("/{id}")
     public ResponseEntity<?> saveRating(
-            @PathVariable("id") String bookId,
             @RequestHeader("x-user-id") String userId,
+            @PathVariable("id") String bookId,
             @Valid @RequestBody RatingRQDTO rating
     ) throws APIException {
         return ResponseEntity.ok(mapper.toRSDTO(service.saveRating(mapper.toIDTO(rating, bookId, userId))));
@@ -48,8 +48,8 @@ public class RatingController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateRating(
-            @PathVariable("id") String bookId,
             @RequestHeader("x-user-id") String userId,
+            @PathVariable("id") String bookId,
             @Valid @RequestBody RatingRQDTO rating
     ) throws APIException {
         return ResponseEntity.ok(mapper.toRSDTO(service.updateRating(mapper.toIDTO(rating, bookId, userId))));

@@ -5,7 +5,6 @@ import org.gycoding.books.domain.model.BookStatus;
 
 @Builder
 public record BookRQDTO(
-        String id,
         Number averageRating,
         BookStatus status
 ) { }
