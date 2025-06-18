@@ -12,4 +12,5 @@ public interface RatingMongoRepository extends MongoRepository<RatingEntity, Str
     Optional<RatingEntity> findByBookId(String bookId);
     Optional<RatingEntity> findByBookIdAndUserId(String bookId, String userId);
     List<RatingEntity> findAllByUserId(String userId);
+    List<RatingEntity> findAllByBookId(String bookId);
 }

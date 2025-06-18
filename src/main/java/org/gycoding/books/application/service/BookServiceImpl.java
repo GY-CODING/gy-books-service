@@ -60,16 +60,16 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void refreshAverageRating(RatingMO rating, String userId) throws APIException {
-        final var persistedBook = repository.get(rating.bookId())
+    public void refreshAverageRating(String bookId, Number rating, String userId) throws APIException {
+        final var persistedBook = repository.get(bookId)
                 .orElse(
                     BookMO.builder()
-                            .id(rating.bookId())
-                            .averageRating(rating.rating())
+                            .id(bookId)
+                            .averageRating(rating)
                             .status(BookStatus.READ)
                             .build()
                 );
 
-        repository.save(persistedBook, userId);
+        repository.update(persistedBook, userId);
     }
 }

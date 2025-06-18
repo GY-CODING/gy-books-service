@@ -13,5 +13,5 @@ public interface BookService {
     BookODTO getBook(String id) throws APIException;
     BookODTO getBook(String id, String userId) throws APIException;
     BookODTO updateBook(BookIDTO book, String userId) throws APIException;
-    void refreshAverageRating(RatingMO rating, String userId) throws APIException;
+    void refreshAverageRating(String bookId, Number rating, String userId) throws APIException;
 }

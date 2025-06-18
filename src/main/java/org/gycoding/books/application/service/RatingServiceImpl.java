@@ -6,10 +6,12 @@ import org.gycoding.books.application.dto.in.RatingIDTO;
 import org.gycoding.books.application.dto.out.RatingODTO;
 import org.gycoding.books.application.mapper.RatingServiceMapper;
 import org.gycoding.books.domain.exceptions.BooksAPIError;
+import org.gycoding.books.domain.model.RatingMO;
 import org.gycoding.books.domain.repository.RatingRepository;
 import org.gycoding.exceptions.model.APIException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -54,7 +56,19 @@ public class RatingServiceImpl implements RatingService {
         try {
             final var savedRating = mapper.toODTO(repository.save(mapper.toMO(rating)));
 
-            bookService.refreshAverageRating(mapper.toMO(rating), rating.userId());
+            final var ratingList = new ArrayList<Double>(repository.list(rating.bookId())
+                    .stream()
+                    .map(ratingElement -> ratingElement.rating().doubleValue())
+                    .toList());
+            
+            ratingList.add(savedRating.rating().doubleValue());
+
+            final var averageRating = ratingList.stream()
+                    .mapToDouble(Double::doubleValue)
+                    .average()
+                    .orElse(0.0);
+
+            bookService.refreshAverageRating(rating.bookId(), averageRating, rating.userId());
 
             return savedRating;
         } catch (Exception e) {

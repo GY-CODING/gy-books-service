@@ -26,6 +26,13 @@ public class RatingRepositoryImpl implements RatingRepository {
     }
 
     @Override
+    public List<RatingMO> listByBookID(String bookId) {
+        return repository.findAllByBookId(bookId).stream()
+                .map(mapper::toMO)
+                .toList();
+    }
+
+    @Override
     public List<RatingMO> list(String userId) {
         return repository.findAllByUserId(userId).stream()
                 .map(mapper::toMO)
