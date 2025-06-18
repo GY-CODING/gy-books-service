@@ -6,6 +6,7 @@ import org.gycoding.books.application.service.BookService;
 import org.gycoding.books.application.service.RatingService;
 import org.gycoding.books.domain.model.BookStatus;
 import org.gycoding.books.infrastructure.api.dto.in.BookRQDTO;
+import org.gycoding.books.infrastructure.api.dto.in.BookStatusRQDTO;
 import org.gycoding.books.infrastructure.api.dto.in.RatingRQDTO;
 import org.gycoding.books.infrastructure.api.mapper.BookControllerMapper;
 import org.gycoding.books.infrastructure.api.mapper.RatingControllerMapper;
@@ -20,18 +21,26 @@ public class BookController {
     private final BookService service;
     private final BookControllerMapper mapper;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getBook(
+    @GetMapping("/{id}/public")
+    public ResponseEntity<?> getBookPublic(
             @PathVariable("id") String id
     ) throws APIException {
         return ResponseEntity.ok(mapper.toRSDTO(service.getBook(id)));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getBook(
+            @RequestHeader("x-user-id") String userId,
+            @PathVariable("id") String id
+    ) throws APIException {
+        return ResponseEntity.ok(mapper.toRSDTO(service.getBook(id, userId)));
+    }
+
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateBookStatus(
             @PathVariable("id") String id,
-            @RequestParam String status
+            @RequestBody BookStatusRQDTO status
     ) throws APIException {
-        return ResponseEntity.ok(mapper.toRSDTO(service.updateBookStatus(id, BookStatus.valueOf(status))));
+        return ResponseEntity.ok(mapper.toRSDTO(service.updateBookStatus(id, status.status())));
     }
 }
