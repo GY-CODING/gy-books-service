@@ -11,12 +11,12 @@ import java.util.Optional;
 
 @Repository
 public interface BookMongoRepository extends MongoRepository<BookEntity, String> {
-    @Query("{ 'id' : ?0, 'userId' : ?1 }")
+    @Query("{ 'id' : ?0, 'userData.userId' : ?1 }")
     Optional<BookEntity> findByIdAndUserId(String id, String userId);
 
     @Query("{ 'id' : ?0 }")
     List<BookEntity> findAllById(String id);
 
-    @Query("{ 'userId' : ?0 }")
+    @Query("{ 'userData.userId' : ?0 }")
     List<BookEntity> findAllByUserId(String userId);
 }
