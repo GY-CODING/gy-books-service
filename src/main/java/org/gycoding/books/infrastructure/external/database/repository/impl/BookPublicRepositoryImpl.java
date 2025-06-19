@@ -83,7 +83,7 @@ public class BookPublicRepositoryImpl implements BookRepository {
 
         var savedBook = repository.findById(book.id())
                 .orElse(
-                    repository.save(mapper.toEntity(book, userId))
+                    repository.save(mapper.toEntity(book))
                 );
 
         return mapper.toMO(savedBookPublic, savedBook);

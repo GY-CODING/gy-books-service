@@ -1,8 +1,14 @@
 package org.gycoding.books.infrastructure.external.database.mapper;
 
+import org.gycoding.books.application.dto.in.UserDataIDTO;
+import org.gycoding.books.application.dto.out.UserDataODTO;
 import org.gycoding.books.domain.model.BookMO;
+import org.gycoding.books.domain.model.UserDataMO;
+import org.gycoding.books.infrastructure.api.dto.in.UserDataRQDTO;
+import org.gycoding.books.infrastructure.api.dto.out.UserDataRSDTO;
 import org.gycoding.books.infrastructure.external.database.model.BookEntity;
 import org.gycoding.books.infrastructure.external.database.model.BookPublicEntity;
+import org.gycoding.books.infrastructure.external.database.model.UserDataEntity;
 import org.mapstruct.*;
 
 import java.time.LocalDate;
@@ -18,8 +24,11 @@ public interface BookRepositoryMapper {
 
     BookPublicEntity toPublicEntity(BookMO book);
 
-    @Mapping(target = "userId", source = "userId")
-    BookEntity toEntity(BookMO book, String userId);
+    BookEntity toEntity(BookMO book);
+
+    UserDataMO toMO(UserDataEntity userData);
+
+    UserDataEntity toEntity(UserDataMO userData);
 
     @Mapping(target = "mongoId", ignore = true)
     @Mapping(target = "averageRating", expression = "java(checkNull(book.averageRating()))")

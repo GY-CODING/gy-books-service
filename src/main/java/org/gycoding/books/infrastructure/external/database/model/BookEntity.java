@@ -15,6 +15,5 @@ public class BookEntity {
     @Id
     private String mongoId;
     private String id;
-    private String userId;
     private UserDataEntity userData;
 }
