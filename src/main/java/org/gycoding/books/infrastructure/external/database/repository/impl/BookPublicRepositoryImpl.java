@@ -10,6 +10,7 @@ import org.gycoding.books.infrastructure.external.database.model.BookPublicEntit
 import org.gycoding.books.infrastructure.external.database.repository.BookMongoRepository;
 import org.gycoding.books.infrastructure.external.database.repository.BookPublicMongoRepository;
 import org.gycoding.exceptions.model.APIException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -57,8 +58,8 @@ public class BookPublicRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public List<BookMO> listByUserID(String userId) {
-        final var books = repository.findAllByUserId(userId);
+    public List<BookMO> listByUserID(String userId, Pageable pageable) {
+        final var books = repository.findAllByUserDataUserId(userId, pageable);
 
         return books.stream()
                 .map(book -> {

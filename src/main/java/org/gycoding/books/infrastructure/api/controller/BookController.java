@@ -5,6 +5,7 @@ import org.gycoding.books.application.service.BookService;
 import org.gycoding.books.infrastructure.api.dto.in.BookRQDTO;
 import org.gycoding.books.infrastructure.api.mapper.BookControllerMapper;
 import org.gycoding.exceptions.model.APIException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,9 +33,10 @@ public class BookController {
 
     @GetMapping("")
     public ResponseEntity<?> listBooks(
-            @RequestHeader("x-user-id") String userId
-    ) throws APIException {
-        return ResponseEntity.ok(service.listBooks(userId).stream()
+            @RequestHeader("x-user-id") String userId,
+            Pageable pageable
+            ) throws APIException {
+        return ResponseEntity.ok(service.listBooks(userId, pageable).stream()
                 .map(mapper::toRSDTO)
                 .toList()
         );

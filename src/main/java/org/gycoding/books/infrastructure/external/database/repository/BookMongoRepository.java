@@ -2,6 +2,8 @@ package org.gycoding.books.infrastructure.external.database.repository;
 
 import org.gycoding.books.infrastructure.external.database.model.BookEntity;
 import org.gycoding.books.infrastructure.external.database.model.BookPublicEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -17,6 +19,5 @@ public interface BookMongoRepository extends MongoRepository<BookEntity, String>
     @Query("{ 'id' : ?0 }")
     List<BookEntity> findAllById(String id);
 
-    @Query("{ 'userData.userId' : ?0 }")
-    List<BookEntity> findAllByUserId(String userId);
+    Page<BookEntity> findAllByUserDataUserId(String userId, Pageable pageable);
 }

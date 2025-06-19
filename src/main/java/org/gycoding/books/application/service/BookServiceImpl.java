@@ -12,6 +12,7 @@ import org.gycoding.books.domain.model.RatingMO;
 import org.gycoding.books.domain.model.UserDataMO;
 import org.gycoding.books.domain.repository.BookRepository;
 import org.gycoding.exceptions.model.APIException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -51,8 +52,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookODTO> listBooks(String userId) throws APIException {
-        return repository.listByUserID(userId).stream()
+    public List<BookODTO> listBooks(String userId, Pageable pageable) throws APIException {
+        return repository.listByUserID(userId, pageable).stream()
                 .map(mapper::toODTO)
                 .toList();
     }
