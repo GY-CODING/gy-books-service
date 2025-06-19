@@ -31,7 +31,6 @@ public interface BookRepositoryMapper {
     UserDataEntity toEntity(UserDataMO userData);
 
     @Mapping(target = "mongoId", ignore = true)
-    @Mapping(target = "averageRating", expression = "java(checkNull(book.averageRating()))")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     BookPublicEntity toUpdatedPublicEntity(@MappingTarget BookPublicEntity persistedBookPublic, BookMO book);
 
@@ -46,9 +45,5 @@ public interface BookRepositoryMapper {
         if(date == null) return null;
 
         return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-    }
-
-    default Number checkNull(Number number) {
-        return number == null ? 0.0 : number;
     }
 }

@@ -75,13 +75,13 @@ public class BookPublicRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public BookMO save(BookMO book, String userId) {
+    public BookMO save(BookMO book) {
         var savedBookPublic = publicRepository.findById(book.id())
                 .orElse(
                     publicRepository.save(mapper.toPublicEntity(book))
                 );
 
-        var savedBook = repository.findById(book.id())
+        var savedBook = repository.findByIdAndUserId(book.id(), book.userData().userId())
                 .orElse(
                     repository.save(mapper.toEntity(book))
                 );
@@ -94,8 +94,16 @@ public class BookPublicRepositoryImpl implements BookRepository {
         final var persistedBookPublic = publicRepository.findById(book.id());
         final var persistedBook = repository.findByIdAndUserId(book.id(), book.userData().userId());
 
-        if(persistedBookPublic.isEmpty() || persistedBook.isEmpty()) {
-            return save(book, book.userData().userId());
+        if(persistedBookPublic.isEmpty() && persistedBook.isEmpty()) {
+            return save(book);
+        } else if(persistedBookPublic.isEmpty()) {
+            final var savedBookPublic = publicRepository.save(mapper.toPublicEntity(book));
+
+            return mapper.toMO(savedBookPublic, persistedBook.get());
+        } else if(persistedBook.isEmpty()) {
+            final var savedBook = repository.save(mapper.toEntity(book));
+
+            return mapper.toMO(persistedBookPublic.get(), savedBook);
         }
 
         final var updatedBookPublic = publicRepository.save(mapper.toUpdatedPublicEntity(persistedBookPublic.get(), book));

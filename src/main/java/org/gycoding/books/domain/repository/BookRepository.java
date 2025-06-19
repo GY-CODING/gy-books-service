@@ -12,6 +12,6 @@ public interface BookRepository {
     Optional<BookMO> get(String id, String userId);
     List<BookMO> list(String id);
     List<BookMO> listByUserID(String userId);
-    BookMO save(BookMO book, String userId);
+    BookMO save(BookMO book);
     BookMO update(BookMO book);
 }

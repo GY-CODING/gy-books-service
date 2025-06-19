@@ -62,7 +62,9 @@ public class BookServiceImpl implements BookService {
         try {
             final var updatedBook = repository.update(mapper.toMO(book));
 
-            refreshAverageRating(updatedBook);
+            if(book.userData().status().equals(BookStatus.READ)) {
+                refreshAverageRating(updatedBook);
+            }
 
             return mapper.toODTO(updatedBook);
         } catch (Exception e) {
