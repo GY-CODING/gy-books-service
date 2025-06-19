@@ -39,6 +39,9 @@ public interface BookRepositoryMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     BookEntity toUpdatedEntity(@MappingTarget BookEntity persistedBook, BookMO book);
 
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    UserDataEntity toUpdatedEntity(@MappingTarget UserDataEntity persistedUserData, UserDataMO userData);
+
     default String formatDate(LocalDate date) {
         if(date == null) return null;
 
