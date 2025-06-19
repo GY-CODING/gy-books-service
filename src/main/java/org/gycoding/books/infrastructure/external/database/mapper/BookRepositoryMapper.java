@@ -22,6 +22,7 @@ public interface BookRepositoryMapper {
 
     BookMO toPublicMO(BookPublicEntity bookPublic);
 
+    @Mapping(target = "averageRating", expression = "java(0.0)")
     BookPublicEntity toPublicEntity(BookMO book);
 
     BookEntity toEntity(BookMO book);
