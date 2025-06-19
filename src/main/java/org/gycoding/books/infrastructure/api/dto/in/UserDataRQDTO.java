@@ -1,12 +1,11 @@
 package org.gycoding.books.infrastructure.api.dto.in;
 
 import lombok.Builder;
-
-import java.util.Date;
+import org.gycoding.books.domain.model.BookStatus;
 
 @Builder
-public record RatingRQDTO(
-        String bookId,
+public record UserDataRQDTO(
+        BookStatus status,
         Number rating,
         String startDate,
         String endDate

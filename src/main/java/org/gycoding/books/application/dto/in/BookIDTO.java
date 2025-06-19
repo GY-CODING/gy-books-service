@@ -7,5 +7,5 @@ import org.gycoding.books.domain.model.BookStatus;
 public record BookIDTO(
         String id,
         Number averageRating,
-        BookStatus status
+        UserDataIDTO userData
 ) { }

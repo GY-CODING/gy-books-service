@@ -1,5 +1,6 @@
 package org.gycoding.books.infrastructure.api.dto.out;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import org.gycoding.books.domain.model.BookStatus;
@@ -13,6 +14,6 @@ import java.util.UUID;
 public record BookRSDTO(
         String id,
         Number averageRating,
-        @NotNull
-        BookStatus status
+        @JsonInclude(JsonInclude.Include.NON_NULL)
+        UserDataRSDTO userData
 ) { }

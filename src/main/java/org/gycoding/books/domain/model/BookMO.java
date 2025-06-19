@@ -11,5 +11,5 @@ import java.util.UUID;
 public record BookMO(
         String id,
         Number averageRating,
-        BookStatus status
+        UserDataMO userData
 ) { }

@@ -6,5 +6,5 @@ import org.gycoding.books.domain.model.BookStatus;
 @Builder
 public record BookRQDTO(
         Number averageRating,
-        BookStatus status
+        UserDataRQDTO userData
 ) { }

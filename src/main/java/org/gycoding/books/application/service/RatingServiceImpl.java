@@ -56,8 +56,6 @@ public class RatingServiceImpl implements RatingService {
         try {
             final var savedRating = mapper.toODTO(repository.save(mapper.toMO(rating)));
 
-            bookService.refreshAverageRating(rating.bookId(), calculateAverageRating(rating), rating.userId());
-
             return savedRating;
         } catch (Exception e) {
             throw new APIException(
@@ -72,8 +70,6 @@ public class RatingServiceImpl implements RatingService {
     public RatingODTO updateRating(RatingIDTO rating) throws APIException {
         try {
             final var updatedRating = mapper.toODTO(repository.update(mapper.toMO(rating)));
-
-            bookService.refreshAverageRating(rating.bookId(), calculateAverageRating(rating), rating.userId());
 
             return updatedRating;
         } catch (Exception e) {

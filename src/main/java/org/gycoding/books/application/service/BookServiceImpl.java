@@ -9,9 +9,13 @@ import org.gycoding.books.domain.exceptions.BooksAPIError;
 import org.gycoding.books.domain.model.BookMO;
 import org.gycoding.books.domain.model.BookStatus;
 import org.gycoding.books.domain.model.RatingMO;
+import org.gycoding.books.domain.model.UserDataMO;
 import org.gycoding.books.domain.repository.BookRepository;
 import org.gycoding.exceptions.model.APIException;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -47,9 +51,20 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookODTO updateBook(BookIDTO book, String userId) throws APIException {
+    public List<BookODTO> listBooks(String userId) throws APIException {
+        return repository.listByUserID(userId).stream()
+                .map(mapper::toODTO)
+                .toList();
+    }
+
+    @Override
+    public BookODTO updateBook(BookIDTO book) throws APIException {
         try {
-            return mapper.toODTO(repository.update(mapper.toMO(book), userId));
+            final var updatedBook = repository.update(mapper.toMO(book));
+
+            refreshAverageRating(updatedBook);
+
+            return mapper.toODTO(updatedBook);
         } catch (Exception e) {
             throw new APIException(
                     BooksAPIError.CONFLICT.getCode(),
@@ -59,14 +74,29 @@ public class BookServiceImpl implements BookService {
         }
     }
 
-    @Override
-    public void refreshAverageRating(String bookId, Number rating, String userId) throws APIException {
-        final var book = BookMO.builder()
-                .id(bookId)
-                .averageRating(rating)
-                .status(BookStatus.READ)
-                .build();
+    private void refreshAverageRating(BookMO book) throws APIException {
+        final var ratings = new ArrayList<Double>(repository.list(book.id())
+                .stream()
+                .map(ratingElement -> ratingElement.userData().rating().doubleValue())
+                .toList());
 
-        repository.update(book, userId);
+        ratings.add(book.userData().rating().doubleValue());
+
+        final var averageRating = ratings.stream()
+                .mapToDouble(Double::doubleValue)
+                .average()
+                .orElse(0.0);
+
+        repository.update(
+                BookMO.builder()
+                    .id(book.id())
+                    .averageRating(averageRating)
+                    .userData(
+                            UserDataMO.builder()
+                                    .userId(book.userData().userId())
+                                    .build()
+                    )
+                    .build()
+        );
     }
 }

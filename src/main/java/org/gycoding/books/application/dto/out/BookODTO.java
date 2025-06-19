@@ -12,5 +12,5 @@ import java.util.UUID;
 public record BookODTO(
         String id,
         Number averageRating,
-        BookStatus status
+        UserDataODTO userData
 ) { }
