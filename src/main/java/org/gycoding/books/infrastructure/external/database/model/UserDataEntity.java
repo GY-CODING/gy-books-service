@@ -10,7 +10,7 @@ import org.springframework.data.annotation.Id;
 @Getter
 @Setter
 public class UserDataEntity {
-    private String userId;
+    private String profileId;
     private BookStatus status;
     private Number rating;
     private String startDate;

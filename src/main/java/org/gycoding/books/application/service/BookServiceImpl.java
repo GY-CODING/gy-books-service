@@ -11,12 +11,14 @@ import org.gycoding.books.domain.model.BookStatus;
 import org.gycoding.books.domain.model.RatingMO;
 import org.gycoding.books.domain.model.UserDataMO;
 import org.gycoding.books.domain.repository.BookRepository;
+import org.gycoding.books.domain.repository.GYAccountsFacade;
 import org.gycoding.exceptions.model.APIException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -39,8 +41,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookODTO getBook(String id, String userId) throws APIException {
-        return repository.get(id, userId)
+    public BookODTO getBook(String id, UUID profileId) throws APIException {
+        return repository.get(id, profileId)
                 .map(mapper::toODTO)
                 .orElseThrow(
                         () -> new APIException(
@@ -52,8 +54,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookODTO> listBooks(String userId, Pageable pageable) throws APIException {
-        return repository.listByUserID(userId, pageable).stream()
+    public List<BookODTO> listBooks(UUID profileId, Pageable pageable) throws APIException {
+        return repository.listByProfileId(profileId, pageable).stream()
                 .map(mapper::toODTO)
                 .toList();
     }
@@ -96,7 +98,7 @@ public class BookServiceImpl implements BookService {
                     .averageRating(averageRating)
                     .userData(
                             UserDataMO.builder()
-                                    .userId(book.userData().userId())
+                                    .profileId(book.userData().profileId())
                                     .build()
                     )
                     .build()

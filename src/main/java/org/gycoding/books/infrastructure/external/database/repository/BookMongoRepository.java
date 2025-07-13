@@ -13,11 +13,11 @@ import java.util.Optional;
 
 @Repository
 public interface BookMongoRepository extends MongoRepository<BookEntity, String> {
-    @Query("{ 'id' : ?0, 'userData.userId' : ?1 }")
-    Optional<BookEntity> findByIdAndUserId(String id, String userId);
+    @Query("{ 'id' : ?0, 'userData.profileId' : ?1 }")
+    Optional<BookEntity> findByIdAndProfileId(String id, String profileId);
 
     @Query("{ 'id' : ?0 }")
     List<BookEntity> findAllById(String id);
 
-    Page<BookEntity> findAllByUserDataUserId(String userId, Pageable pageable);
+    Page<BookEntity> findAllByUserDataProfileId(String profileId, Pageable pageable);
 }

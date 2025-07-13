@@ -6,13 +6,14 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface BookRepository {
     Optional<BookMO> get(String id);
-    Optional<BookMO> get(String id, String userId);
+    Optional<BookMO> get(String id, UUID profileId);
     List<BookMO> list(String id);
-    List<BookMO> listByUserID(String userId, Pageable pageable);
+    List<BookMO> listByProfileId(UUID profileId, Pageable pageable);
     BookMO save(BookMO book);
     BookMO update(BookMO book);
 }

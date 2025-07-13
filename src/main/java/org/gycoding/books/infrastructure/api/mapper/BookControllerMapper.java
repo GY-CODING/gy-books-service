@@ -19,12 +19,12 @@ import java.util.UUID;
 @Mapper(componentModel = "spring", imports = { UUID.class }, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface BookControllerMapper {
     @Mapping(target = "id", source = "id")
-    @Mapping(target = "userData", expression = "java(toIDTO(book.userData(), userId))")
-    BookIDTO toIDTO(BookRQDTO book, String id, String userId);
+    @Mapping(target = "userData", expression = "java(toIDTO(book.userData(), profileId))")
+    BookIDTO toIDTO(BookRQDTO book, String id, UUID profileId);
 
     BookRSDTO toRSDTO(BookODTO book);
 
-    UserDataIDTO toIDTO(UserDataRQDTO userData, String userId);
+    UserDataIDTO toIDTO(UserDataRQDTO userData, UUID profileId);
 
     UserDataRSDTO toRSDTO(UserDataODTO userData);
 

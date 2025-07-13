@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import org.gycoding.books.domain.model.BookStatus;
 
+import java.util.UUID;
+
 @Builder
 public record UserDataRSDTO(
-        String userId,
+        UUID profileId,
         BookStatus status,
         @JsonInclude(JsonInclude.Include.NON_NULL)
         Number rating,

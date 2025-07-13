@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -30,9 +31,9 @@ public class BookPublicRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public Optional<BookMO> get(String id, String userId) {
+    public Optional<BookMO> get(String id, UUID profileId) {
         final var bookPublic = publicRepository.findById(id);
-        final var book = repository.findByIdAndUserId(id, userId);
+        final var book = repository.findByIdAndProfileId(id, profileId.toString());
 
         if(bookPublic.isEmpty() || book.isEmpty()) {
             return Optional.empty();
@@ -58,8 +59,8 @@ public class BookPublicRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public List<BookMO> listByUserID(String userId, Pageable pageable) {
-        final var books = repository.findAllByUserDataUserId(userId, pageable);
+    public List<BookMO> listByProfileId(UUID profileId, Pageable pageable) {
+        final var books = repository.findAllByUserDataProfileId(profileId.toString(), pageable);
 
         return books.stream()
                 .map(book -> {
@@ -82,7 +83,7 @@ public class BookPublicRepositoryImpl implements BookRepository {
                     publicRepository.save(mapper.toPublicEntity(book))
                 );
 
-        var savedBook = repository.findByIdAndUserId(book.id(), book.userData().userId())
+        var savedBook = repository.findByIdAndProfileId(book.id(), book.userData().profileId().toString())
                 .orElse(
                     repository.save(mapper.toEntity(book))
                 );
@@ -93,7 +94,7 @@ public class BookPublicRepositoryImpl implements BookRepository {
     @Override
     public BookMO update(BookMO book) {
         final var persistedBookPublic = publicRepository.findById(book.id());
-        final var persistedBook = repository.findByIdAndUserId(book.id(), book.userData().userId());
+        final var persistedBook = repository.findByIdAndProfileId(book.id(), book.userData().profileId().toString());
 
         if(persistedBookPublic.isEmpty() && persistedBook.isEmpty()) {
             return save(book);
