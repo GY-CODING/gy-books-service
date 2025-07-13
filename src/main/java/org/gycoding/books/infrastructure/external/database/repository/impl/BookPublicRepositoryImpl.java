@@ -113,4 +113,16 @@ public class BookPublicRepositoryImpl implements BookRepository {
 
         return mapper.toMO(updatedBookPublic, updatedBook);
     }
+
+    @Override
+    public void remove(String id, UUID profileId) throws APIException {
+        final var persistedBook = repository.findByIdAndProfileId(id, profileId.toString())
+                .orElseThrow(() -> new APIException(
+                        BooksAPIError.RESOURCE_NOT_FOUND.getCode(),
+                        BooksAPIError.RESOURCE_NOT_FOUND.getMessage(),
+                        BooksAPIError.RESOURCE_NOT_FOUND.getStatus()
+                ));
+
+        repository.delete(persistedBook);
+    }
 }

@@ -54,4 +54,14 @@ public class BookController {
     ) throws APIException {
         return ResponseEntity.ok(mapper.toRSDTO(service.updateBook(mapper.toIDTO(book, id, accountsFacade.getProfileId(userId)))));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> removeBook(
+            @RequestHeader("x-user-id") String userId,
+            @PathVariable("id") String id
+    ) throws APIException {
+        service.removeBook(id, accountsFacade.getProfileId(userId));
+
+        return ResponseEntity.noContent().build();
+    }
 }

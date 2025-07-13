@@ -1,6 +1,7 @@
 package org.gycoding.books.domain.repository;
 
 import org.gycoding.books.domain.model.BookMO;
+import org.gycoding.exceptions.model.APIException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
@@ -16,4 +17,5 @@ public interface BookRepository {
     List<BookMO> listByProfileId(UUID profileId, Pageable pageable);
     BookMO save(BookMO book);
     BookMO update(BookMO book);
+    void remove(String id, UUID profileId) throws APIException;
 }

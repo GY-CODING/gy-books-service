@@ -79,6 +79,19 @@ public class BookServiceImpl implements BookService {
         }
     }
 
+    @Override
+    public void removeBook(String id, UUID profileId) throws APIException {
+        try {
+            repository.remove(id, profileId);
+        } catch (Exception e) {
+            throw new APIException(
+                    BooksAPIError.RESOURCE_NOT_FOUND.getCode(),
+                    BooksAPIError.RESOURCE_NOT_FOUND.getMessage(),
+                    BooksAPIError.RESOURCE_NOT_FOUND.getStatus()
+            );
+        }
+    }
+
     private void refreshAverageRating(BookMO book) throws APIException {
         final var ratings = new ArrayList<Double>(repository.list(book.id())
                 .stream()

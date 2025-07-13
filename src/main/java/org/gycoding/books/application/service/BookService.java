@@ -12,4 +12,5 @@ public interface BookService {
     BookODTO getBook(String id, UUID profileId) throws APIException;
     List<BookODTO> listBooks(UUID profileId, Pageable pageable) throws APIException;
     BookODTO updateBook(BookIDTO book) throws APIException;
+    void removeBook(String id, UUID profileId) throws APIException;
 }
