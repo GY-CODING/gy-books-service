@@ -7,6 +7,7 @@ import org.gycoding.books.domain.model.BookStatus;
 public record UserDataRQDTO(
         BookStatus status,
         Number rating,
+        Number progress,
         String startDate,
         String endDate
 ) { }

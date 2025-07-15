@@ -10,6 +10,7 @@ public record UserDataIDTO(
         UUID profileId,
         BookStatus status,
         Number rating,
+        Number progress,
         String startDate,
         String endDate
 ) { }

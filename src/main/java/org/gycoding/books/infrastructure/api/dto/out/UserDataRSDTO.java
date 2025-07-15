@@ -13,6 +13,8 @@ public record UserDataRSDTO(
         @JsonInclude(JsonInclude.Include.NON_NULL)
         Number rating,
         @JsonInclude(JsonInclude.Include.NON_NULL)
+        Number progress,
+        @JsonInclude(JsonInclude.Include.NON_NULL)
         String startDate,
         @JsonInclude(JsonInclude.Include.NON_NULL)
         String endDate
