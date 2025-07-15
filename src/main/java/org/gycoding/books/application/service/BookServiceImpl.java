@@ -65,9 +65,7 @@ public class BookServiceImpl implements BookService {
         try {
             final var updatedBook = repository.update(mapper.toMO(book));
 
-            if(book.userData().status().equals(BookStatus.READ)) {
-                refreshAverageRating(updatedBook);
-            }
+            refreshAverageRating(updatedBook);
 
             return mapper.toODTO(updatedBook);
         } catch (Exception e) {
@@ -82,7 +80,16 @@ public class BookServiceImpl implements BookService {
     @Override
     public void removeBook(String id, UUID profileId) throws APIException {
         try {
+            final var bookToBeRemoved = repository.get(id, profileId)
+                    .orElseThrow(() -> new APIException(
+                            BooksAPIError.RESOURCE_NOT_FOUND.getCode(),
+                            BooksAPIError.RESOURCE_NOT_FOUND.getMessage(),
+                            BooksAPIError.RESOURCE_NOT_FOUND.getStatus()
+                    ));
+
             repository.remove(id, profileId);
+
+            refreshAverageRating(bookToBeRemoved);
         } catch (Exception e) {
             throw new APIException(
                     BooksAPIError.RESOURCE_NOT_FOUND.getCode(),
