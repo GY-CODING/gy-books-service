@@ -102,7 +102,7 @@ public class BookServiceImpl implements BookService {
     private void refreshAverageRating(BookMO book) throws APIException {
         final var ratings = new ArrayList<Double>(repository.list(book.id())
                 .stream()
-                .filter(bookElement -> bookElement.userData().status() == BookStatus.READ)
+                .filter(bookElement -> BookStatus.READ.equals(bookElement.userData().status()))
                 .map(ratingElement -> ratingElement.userData().rating().doubleValue())
                 .toList());
 
