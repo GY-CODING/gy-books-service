@@ -65,7 +65,7 @@ public class BookServiceImpl implements BookService {
         try {
             final var updatedBook = repository.update(mapper.toMO(book));
 
-            refreshAverageRating(updatedBook);
+            if (BookStatus.READ.equals(book.userData().status())) refreshAverageRating(updatedBook);
 
             return mapper.toODTO(updatedBook);
         } catch (Exception e) {
@@ -106,7 +106,7 @@ public class BookServiceImpl implements BookService {
                 .map(ratingElement -> ratingElement.userData().rating().doubleValue())
                 .toList());
 
-        if (!BookStatus.READ.equals(book.userData().status())) ratings.add(book.userData().rating().doubleValue());
+        ratings.add(book.userData().rating().doubleValue());
 
         final var averageRating = ratings.stream()
                 .mapToDouble(Double::doubleValue)
