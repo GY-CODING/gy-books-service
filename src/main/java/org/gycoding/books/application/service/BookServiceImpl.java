@@ -106,7 +106,7 @@ public class BookServiceImpl implements BookService {
                 .map(ratingElement -> ratingElement.userData().rating().doubleValue())
                 .toList());
 
-        ratings.add(book.userData().rating().doubleValue());
+        if (!BookStatus.READ.equals(book.userData().status())) ratings.add(book.userData().rating().doubleValue());
 
         final var averageRating = ratings.stream()
                 .mapToDouble(Double::doubleValue)
