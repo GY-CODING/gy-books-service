@@ -18,6 +18,6 @@ public interface BookServiceMapper {
     BookMO toMO(BookIDTO book);
 
     default Number checkStatus(UserDataIDTO userData) {
-        return userData.status().equals(BookStatus.READ) ? userData.rating() : 0.0;
+        return BookStatus.READ.equals(userData.status()) ? userData.rating() : 0.0;
     }
 }
