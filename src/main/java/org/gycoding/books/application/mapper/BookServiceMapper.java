@@ -14,10 +14,15 @@ import org.mapstruct.ReportingPolicy;
 public interface BookServiceMapper {
     BookODTO toODTO(BookMO book);
 
-    @Mapping(target = "userData.rating", expression = "java(checkStatus(userDataIDTO))")
+    @Mapping(target = "userData.rating", expression = "java(checkRating(userDataIDTO))")
+    @Mapping(target = "userData.status", expression = "java(checkStatus(userDataIDTO))")
     BookMO toMO(BookIDTO book);
 
-    default Number checkStatus(UserDataIDTO userData) {
+    default Number checkRating(UserDataIDTO userData) {
         return BookStatus.READ.equals(userData.status()) ? userData.rating() : 0.0;
+    }
+
+    default BookStatus checkStatus(UserDataIDTO userData) {
+        return userData.progress().equals(1) ? BookStatus.READ : userData.status();
     }
 }
