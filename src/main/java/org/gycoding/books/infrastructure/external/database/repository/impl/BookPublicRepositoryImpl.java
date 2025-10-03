@@ -44,17 +44,14 @@ public class BookPublicRepositoryImpl implements BookRepository {
 
     @Override
     public List<BookMO> list(String id) {
-        final var booksPublic = publicRepository.findAllById(id);
+        final var publicBook = publicRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Public book not found")
+                );
         final var books = repository.findAllById(id);
 
-        return booksPublic.stream()
-                .map(publicEntity -> {
-                    var bookEntity = books.stream()
-                            .filter(book -> book.getId().equals(publicEntity.getId()))
-                            .findFirst()
-                            .orElse(null);
-                    return mapper.toMO(publicEntity, bookEntity);
-                })
+        return books.stream()
+                .map(bookEntity -> mapper.toMO(publicBook, bookEntity))
                 .toList();
     }
 

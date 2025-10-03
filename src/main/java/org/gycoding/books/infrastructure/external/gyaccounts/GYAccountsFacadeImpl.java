@@ -18,7 +18,6 @@ public class GYAccountsFacadeImpl implements GYAccountsFacade {
     public String getUserId(String profileId) {
         final var headers = new HashMap<String, String>();
 
-        headers.put("x-api-key", apiKey);
         headers.put("Content-Type", "application/json");
 
         HttpResponse<String> response = UnirestFacade.post(
@@ -34,7 +33,6 @@ public class GYAccountsFacadeImpl implements GYAccountsFacade {
     public UUID getProfileId(String userId) {
         final var headers = new HashMap<String, String>();
 
-        headers.put("x-api-key", apiKey);
         headers.put("Content-Type", "application/json");
 
         HttpResponse<String> response = UnirestFacade.post(

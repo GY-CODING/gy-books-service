@@ -19,10 +19,14 @@ public interface BookServiceMapper {
     BookMO toMO(BookIDTO book);
 
     default Number checkRating(UserDataIDTO userData) {
+        if(userData.progress() == null) return userData.rating();
+
         return BookStatus.READ.equals(userData.status()) ? userData.rating() : 0.0;
     }
 
     default BookStatus checkStatus(UserDataIDTO userData) {
+        if(userData.progress() == null) return userData.status();
+
         return userData.progress().equals(1) ? BookStatus.READ : userData.status();
     }
 }

@@ -9,9 +9,11 @@ import java.util.UUID;
 @Builder
 public record UserDataRSDTO(
         UUID profileId,
+        String editionId,
         BookStatus status,
         @JsonInclude(JsonInclude.Include.NON_NULL)
         Number rating,
+        String review,
         @JsonInclude(JsonInclude.Include.NON_NULL)
         Number progress,
         @JsonInclude(JsonInclude.Include.NON_NULL)

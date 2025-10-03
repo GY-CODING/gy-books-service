@@ -11,9 +11,11 @@ import org.springframework.data.annotation.Id;
 @Setter
 public class UserDataEntity {
     private String profileId;
+    private String editionId;
     private BookStatus status;
-    private Number progress;
     private Number rating;
+    private String review;
+    private Number progress;
     private String startDate;
     private String endDate;
 }

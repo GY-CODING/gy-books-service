@@ -8,8 +8,10 @@ import java.util.UUID;
 @Builder
 public record UserDataODTO(
         UUID profileId,
+        String editionId,
         BookStatus status,
         Number rating,
+        String reivew,
         Number progress,
         String startDate,
         String endDate
