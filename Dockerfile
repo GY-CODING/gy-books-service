@@ -1,6 +1,8 @@
 # Use a base picture with Java and Maven installed
 FROM eclipse-temurin:23-jdk AS build
 
+RUN apt-get update && apt-get install -y maven
+
 # Set the working directory
 WORKDIR /app
 
