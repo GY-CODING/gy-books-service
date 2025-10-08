@@ -11,7 +11,7 @@ public record UserDataODTO(
         String editionId,
         BookStatus status,
         Number rating,
-        String reivew,
+        String review,
         Number progress,
         String startDate,
         String endDate
